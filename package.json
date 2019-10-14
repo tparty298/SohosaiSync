@@ -1,0 +1,22 @@
+{
+  "name": "sohosaisync",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "dev-client": "nodemon client.js",
+    "client": "node client.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "date-with-offset": "^1.0.1",
+    "node-osc": "^4.1.1",
+    "ws": "^7.1.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.19.3"
+  }
+}
