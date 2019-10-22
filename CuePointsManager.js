@@ -4,30 +4,32 @@ module.exports = class CuePointsManager {
 
     this.cue_points = [];
     this.start_points = [];
+    this.ready_points = [];
   }
 
   setCuePoints(new_cue_points) {
     this.cue_points = new_cue_points;
-    this.extractStartPoints();
-    this.sendCuePoints();
+    this.start_points = this.extractPoints(/(\d).*start/);
+    this.ready_points = this.extractPoints(/(\d).*ready/);
+    this.sendPoints();
   }
 
-  extractStartPoints() {
+  extractPoints(reg) {
+    const result = [];
     this.cue_points.forEach(cue => {
-      const reg_result = cue.name.match(/(\d).*(start)/);
+      const reg_result = cue.name.match(reg);
 
       if (reg_result) {
-        console.log(cue);
-        this.start_points[+reg_result[1]] = cue.time;
+        result[+reg_result[1] - 1] = cue.time;
       }
     });
 
-    console.log(this.start_points);
+    return result;
   }
 
-  sendCuePoints() {
-    this.ws_server.broadcast("/control/cue_points", this.cue_points);
-    this.ws_server.broadcast("/control/start_points", this.start_points);
+  sendPoints() {
+    this.ws_server.broadcast("/control/start_points", {start_points: this.start_points});
+    this.ws_server.broadcast("/control/ready_points", {ready_points: this.ready_points});
   }
 
   static convertArray2ObjectCuePoint(data) {

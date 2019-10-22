@@ -23,11 +23,11 @@ module.exports.TimeStamp = class TimeStamp {
     return stamp2Float(process.hrtime(this.init_hrtime));
   }
 
-  get current_timestamp() {
+  get date_milliseconds() {
     return this.current_time + this.init_time;
   }
 
   get current_timestamp_splitted() {
-    return this.current_timestamp.toString().split('.');
+    return this.date_milliseconds.toString().split('.');
   }
 };

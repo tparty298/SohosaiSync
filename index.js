@@ -30,12 +30,23 @@ osc_server.on('message', m => {
   if (path === '/control/cue_points') {
     let new_cue_points = CuePointsManager.convertArray2ObjectCuePoint(values);
     cue_manager.setCuePoints(new_cue_points);
+  } else if (path === '/control/stop') {
+    ws_server.broadcast('/control/stop');
   }
 });
 
-input.on('noteon', msg => {
-  if (msg.note < 6) {
+const start_notenums = [];
+const ready_notenums = [1, 4, 6, 8, 10];
 
+input.on('noteon', msg => {
+  const current_datetime = ws_server.time_stamp.date_milliseconds;
+  //   if (msg.note === 1)
+  const index = ready_notenums.indexOf(msg.note);
+  if (index > -1) {
+    console.log(current_datetime - cue_manager.ready_points[index]);
+    ws_server.broadcast("/control/start_date_at", {
+      start_date_at: current_datetime - cue_manager.ready_points[index] * 1000.
+    });
   }
 });
 
@@ -48,13 +59,6 @@ rl.once("line", str => {
     process.exit();
   }
 });
-
-// test
-setInterval(() => {
-  ws_server.broadcast("/start_part", {
-    part_num: 2
-  });
-}, 1000);
 
 // const main = async () => {
 //   await server.init();
