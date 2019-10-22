@@ -12,10 +12,13 @@ const OSCClientManager = require('./OSCClientManager');
 const ws_client = new WSClient(settings.host, settings.port);
 const osc_manager = new OSCClientManager(client_settings.ports);
 
-// let cue_points = [];
+let cue_points = [];
 
-ws_client.addCallback('/cue_points', data => {
-
+ws_client.addCallback('/control/cue_points', data => {
+  console.log(data);
+});
+ws_client.addCallback('/control/start_points', data => {
+  console.log(data);
 });
 
 ws_client.addCallback('/start_part', data => {

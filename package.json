@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "date-with-offset": "^1.0.1",
+    "easymidi": "^1.0.2",
+    "midi": "^1.0.0",
     "node-osc": "^4.1.1",
     "ws": "^7.1.2"
   },
