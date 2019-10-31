@@ -70,7 +70,7 @@ ws_client.addCallback('/control/start_date_at', data => {
 
 ws_client.addCallback('/control/stop', () => {
   playing = false;
-  osc_manager.send('/control/stop', {});
+  osc_manager.send('/control/stop');
 });
 
 let interval_func = null;
