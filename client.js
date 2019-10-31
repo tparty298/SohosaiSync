@@ -21,7 +21,7 @@ let start_points = [];
 let ready_points = [];
 let playing = false;
 
-if (client_settings.ptp === "ptpd") {
+if (client_settings.ptp_implementation === "ptpd") {
   const ptp_processes = execSync("ps aux | grep ptp").toString().split("\n").filter(e => e.indexOf('ptpd2') > -1);
   if (ptp_processes.length > 0) {
     ptp_processes.forEach(p => {
@@ -36,7 +36,7 @@ if (client_settings.ptp === "ptpd") {
     ptp_conf = ptp_conf.replace('INTERFACE_NAME', client_settings.ptp_interface || "en0");
     fs.writeFileSync('./ptpd-client.conf', ptp_conf);
 
-    ptpd_result = execSync(`sudo ${client_settings.ptp_path || "/etc/ptpd"}/src/ptpd2 -c ptpd-client.conf`).toString();
+    ptpd_result = execSync(`sudo ${client_settings.ptpd_path || "/etc/ptpd"}/src/ptpd2 -c ptpd-client.conf`).toString();
   } catch (e) {
     if (e.stdout) {
       console.log(e.stdout.toString());
