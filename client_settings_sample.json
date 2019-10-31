@@ -1,7 +1,7 @@
 {
   "ports": [5424,2323],
   "receive_parts": [1,2,3,4,5 ],
-  "ptp": "ptpd",
+  "ptp_implementation": "ptpd",
   "debug": false,
   "ptp_interface": "en0"
 }
