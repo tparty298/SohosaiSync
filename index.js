@@ -2,6 +2,7 @@
 const rl = require("readline").createInterface(process.stdin, process.stdout);
 const easymidi = require('easymidi');
 const {Server} = require("node-osc");
+const {execSync} = require('child_process');
 
 // format
 const {TimeStamp} = require('./TimeStamp');
@@ -17,6 +18,34 @@ const osc_server = new Server(7373, '127.0.0.1');
 const WSServer = require('./WSServer');
 const ws_server = new WSServer(false);
 ws_server.time_stamp = new TimeStamp(ws_server);
+
+// ptp
+const ptp_processes = execSync("ps aux | grep ptp").toString().split("\n").filter(e => e.indexOf('ptpd2') > -1);
+if (ptp_processes.length > 0) {
+  ptp_processes.forEach(p => {
+    const pid = p.split(/\s+/)[1];
+    execSync(`sudo kill ${pid}`);
+  });
+}
+
+let ptpd_result;
+try {
+  ptpd_result = execSync(`sudo /etc/ptpd/src/ptpd2 -c ptpd-master-uni.conf`).toString();
+} catch (e) {
+  if (e.stdout) {
+    console.log(e.stdout.toString());
+    console.error(e.stderr.toString());
+  } else {
+    console.log(e);
+  }
+}
+
+console.log(ptpd_result);
+
+const killed_result = execSync("ps aux | grep ptpd").toString().split("\n");
+console.log(killed_result);
+// execSync('sudo', ["ptpd2", "-c", "ptpd-client.conf"]);
+
 
 //
 const CuePointsManager = require('./CuePointsManager');

@@ -1,7 +1,6 @@
 const rl = require("readline").createInterface(process.stdin, process.stdout);
 const fs = require("fs");
 const {execSync} = require('child_process');
-const sudo = require('sudo-prompt');
 
 const settings = JSON.parse(fs.readFileSync('./settings.json'));
 const client_settings = JSON.parse(fs.readFileSync('./client_settings.json'));
