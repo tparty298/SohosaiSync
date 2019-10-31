@@ -8,7 +8,7 @@ const getIPAddress = require('./IPAddressGetter');
 
 const address = getIPAddress(  ['en13', 'en0', 'lo0']);
 
-const SOCKET_PORT = 9021;
+const SOCKET_PORT = 7353;
 
 console.log(address);
 

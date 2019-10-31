@@ -16,6 +16,7 @@
     "easymidi": "^1.0.2",
     "midi": "^1.0.0",
     "node-osc": "^4.1.1",
+    "sudo-prompt": "^9.0.0",
     "ws": "^7.1.2"
   },
   "devDependencies": {

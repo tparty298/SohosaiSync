@@ -21,7 +21,7 @@ module.exports = class CuePointsManager {
 
       if (reg_result) {
         result[+reg_result[1] - 1] = cue.time;
-      }
+    }
     });
 
     return result;
