@@ -31,7 +31,7 @@ if (client_settings.ptp_implementation === "ptpd") {
 
   let ptpd_result;
   try {
-    let ptp_conf = fs.readFileSync('./ptpd-client.conf').toString();
+    let ptp_conf = fs.readFileSync('./ptpd-client-default.conf').toString();
     ptp_conf = ptp_conf.replace('INTERFACE_NAME', client_settings.ptp_interface || "en0");
     fs.writeFileSync('./ptpd-client.conf', ptp_conf);
 
