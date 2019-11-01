@@ -12,6 +12,9 @@ module.exports.TimeStamp = class TimeStamp {
     this.init();
 
     console.log(`Timestamp: init_time ${this.init_time}`);
+    setTimeout(() => {
+      this.init();
+    }, 5000);
   }
 
   init() {
