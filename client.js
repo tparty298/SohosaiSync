@@ -20,14 +20,18 @@ let start_points = [];
 let ready_points = [];
 let playing = false;
 
-if (client_settings.ptp_implementation === "ptpd") {
-  const ptp_processes = execSync("ps aux | grep ptp").toString().split("\n").filter(e => e.indexOf('ptpd2') > -1);
-  if (ptp_processes.length > 0) {
-    ptp_processes.forEach(p => {
-      const pid = p.split(/\s+/)[1];
-      execSync(`sudo kill ${pid}`);
-    });
-  }
+// if (client_settings.ptp_implementation === "ptpd") {
+const ptp_status = fs.readFileSync('/var/run/ptpd2.status.log').toString();
+const check_master = ptp_status.indexOf('38f9d3fffe2a31df') > -1;
+
+console.log(check_master);
+
+const ptp_processes = execSync("ps aux | grep ptp").toString().split("\n").filter(e => e.indexOf('ptpd2') > -1);
+if (ptp_processes.length === 0 || !check_master) {
+  ptp_processes.forEach(p => {
+    const pid = p.split(/\s+/)[1];
+    execSync(`sudo kill ${pid}`);
+  });
 
   let ptpd_result;
   try {
@@ -46,11 +50,13 @@ if (client_settings.ptp_implementation === "ptpd") {
   }
 
   console.log(ptpd_result);
-
-  const killed_result = execSync("ps aux | grep ptpd").toString().split("\n");
-  console.log(killed_result);
-  // execSync('sudo', ["ptpd2", "-c", "ptpd-client.conf"]);
 }
+
+
+const killed_result = execSync("ps aux | grep ptpd").toString().split("\n");
+console.log(killed_result);
+// execSync('sudo', ["ptpd2", "-c", "ptpd-client.conf"]);
+// }
 
 
 ws_client.addCallback('/control/start_points', data => {
@@ -81,6 +87,7 @@ if (client_settings.debug) {
       let current_song_time = (time_stamp.date_milliseconds - start_date_at) * 0.001;
       client_settings.receive_parts.forEach((part, i) => {
         if (ready_points[part - 1] > current_song_time - start_date_at) {
+          console.log(current_song_time - start_points[part - 1]);
           osc_manager.send(`/${part}/current_time`, current_song_time - start_points[part - 1]);
         }
       });
@@ -93,10 +100,8 @@ if (client_settings.debug) {
     if (playing) {
       let current_song_time = (time_stamp.date_milliseconds - start_date_at) * 0.001;
       client_settings.receive_parts.forEach((part, i) => {
-        if (ready_points[part - 1] > current_song_time - start_date_at) {
-          console.log(current_song_time - start_points[part - 1]);
-          osc_manager.send(`/${part}/current_time`, current_song_time - start_points[part - 1]);
-        }
+        console.log(current_song_time - start_points[part - 1]);
+        osc_manager.send(`/${part}/current_time`, current_song_time - start_points[part - 1]);
       });
     }
   }
