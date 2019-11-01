@@ -5,6 +5,10 @@ module.exports = class CuePointsManager {
     this.cue_points = [];
     this.start_points = [];
     this.ready_points = [];
+
+    setInterval(() => {
+      this.sendPoints();
+    }, 20000);
   }
 
   setCuePoints(new_cue_points) {
