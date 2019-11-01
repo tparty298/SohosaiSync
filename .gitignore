@@ -1,6 +1,7 @@
 .idea
 
 client_settings.json
+ptpd-client.conf
 
 # Created by .ignore support plugin (hsz.mobi)
 ### macOS template

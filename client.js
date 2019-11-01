@@ -94,6 +94,7 @@ if (client_settings.debug) {
       let current_song_time = (time_stamp.date_milliseconds - start_date_at) * 0.001;
       client_settings.receive_parts.forEach((part, i) => {
         if (ready_points[part - 1] > current_song_time - start_date_at) {
+          console.log(current_song_time - start_points[part - 1]);
           osc_manager.send(`/${part}/current_time`, current_song_time - start_points[part - 1]);
         }
       });
