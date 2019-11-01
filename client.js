@@ -21,9 +21,13 @@ let ready_points = [];
 let playing = false;
 
 // if (client_settings.ptp_implementation === "ptpd") {
-const ptp_status = fs.readFileSync('/var/run/ptpd2.status.log').toString();
-const check_master = ptp_status.indexOf('38f9d3fffe2a31df') > -1;
+let check_master = false;
+try {
+  const ptp_status = fs.readFileSync('/var/run/ptpd2.status.log').toString();
+  check_master = ptp_status.indexOf('38f9d3fffe2a31df') > -1;
+}catch (e) {
 
+}
 console.log(check_master);
 
 const ptp_processes = execSync("ps aux | grep ptp").toString().split("\n").filter(e => e.indexOf('ptpd2') > -1);
