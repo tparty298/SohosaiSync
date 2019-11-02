@@ -27,7 +27,7 @@ module.exports.TimeStamp = class TimeStamp {
   }
 
   get date_milliseconds() {
-    return this.current_time + this.init_time;
+    return new DateWithOffset(0).getTime();
   }
 
   get current_timestamp_splitted() {
